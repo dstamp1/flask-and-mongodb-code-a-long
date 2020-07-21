@@ -3,16 +3,24 @@
 from flask import Flask
 from flask import render_template
 from flask import request
+from flask import url_for
+from flask import redirect
+from flask import request
 # from flask_pymongo import PyMongo
+
+import datetime
+
 
 
 # -- Initialization section --
 app = Flask(__name__)
+app.jinja_env.globals['current_time'] = datetime.datetime.now()
+
 
 events = [
-        {"event":"First Day of Classes", "date":"2019-08-21"},
-        {"event":"Winter Break", "date":"2019-12-20"},
-        {"event":"Finals Begin", "date":"2019-12-01"}
+        {"name":"First Day of Classes", "date":"2020-08-21"},
+        {"name":"Winter Break", "date":"2020-12-20"},
+        {"name":"Finals Begin", "date":"2020-12-01"}
     ]
 
 # name of database
@@ -28,19 +36,35 @@ events = [
 
 @app.route('/')
 @app.route('/index')
-
 def index():
-    return render_template('index.html', events = events)
+    data = {
+    'events':events,
+    }
+    return render_template('index.html', data=data)
 
+@app.route('/view')
+def events_view():
+    data = {
+    'events':events,
+    }
+    return render_template('eventsView.html', data=data)
 
-# CONNECT TO DB, ADD DATA
+@app.route('/add', methods=['GET','POST'])
+def events_add():
+    if request.method == 'GET':
+        data = {
 
-@app.route('/add')
+        }
+        return render_template('eventsAdd.html', data=data)
+    else:
+        ## Add event to events_list
+        form = request.form
+        
+        event = {
+        'name':form['eventName'],
+        'date':form['eventDate'],
+        }
 
-def add():
-    # connect to the database
+        events.append(event)
 
-    # insert new data
-
-    # return a message to the user
-    return ""
+        return redirect(url_for('events_view'))
