@@ -22,12 +22,13 @@ events = [
         {"name":"Winter Break", "date":"2020-12-20"},
         {"name":"Finals Begin", "date":"2020-12-01"}
     ]
-
-# name of database
-# app.config['MONGO_DBNAME'] = 'database-name'
-
-# URI of database
-# app.config['MONGO_URI'] = 'mongo-uri'
+#
+# MONGO_DBNAME = ''
+# MONGO_DB_USERNAME = ''
+# MONGO_DB_PASSWORD = ''
+#
+# app.config['MONGO_DBNAME'] = MONGO_DBNAME
+# app.config['MONGO_URI'] = f'mongodb+srv://{MONGO_DB_USERNAME}:{MONGO_DB_PASSWORD}@cluster0-kxrbn.mongodb.net/{MONGO_DBNAME}?retryWrites=true'
 
 # mongo = PyMongo(app)
 
@@ -59,7 +60,7 @@ def events_add():
     else:
         ## Add event to events_list
         form = request.form
-        
+
         event = {
         'name':form['eventName'],
         'date':form['eventDate'],
